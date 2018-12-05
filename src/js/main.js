@@ -1,7 +1,8 @@
 let player1;
+
 let config = {
     type: Phaser.AUTO,
-    width: 800,
+    width: 3000,
     height: 600,
     physics: {
         default: 'arcade',
@@ -21,8 +22,9 @@ let game = new Phaser.Game(config);
 
 
 function preload (){
+
     game=this;
-    // Liz Molnar https://raventale.itch.io/nature-tile-set
+
     this.load.image('Ground','src/assets/Tiles/ground/ground01.png');
 
     //
@@ -35,19 +37,25 @@ function preload (){
 
 function create (){
 
-    platforms = this.physics.add.staticGroup();
+    let platforms = this.physics.add.staticGroup();
     platforms.create(30,600,'Ground').refreshBody();
-    for(let i =95;i<850;) {
+    for(let i =95;i<9000;) {
         platforms.create(i, 580, 'Ground').refreshBody();
         i+=65;
     }
 
-    player1 = new Player(40,400);
+
+
+
+    player1 = new Player(35,400);
 
     this.physics.add.collider(player1.sprite,platforms);
     cursors = this.input.keyboard.createCursorKeys();
 
     console.log(player1);
+
+
+
 
 
 
@@ -69,7 +77,7 @@ function update(){
     }
     else
     {
-        player1.x +0;
+        player1.neM();
 
 
     }
