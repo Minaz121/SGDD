@@ -20,7 +20,6 @@ let config = {
 
 let game = new Phaser.Game(config);
 
-
 function preload (){
 
     game=this;
@@ -32,12 +31,11 @@ function preload (){
 
     //
     this.load.image('fox','src/assets/Object/Mushroom_1.png');
-
 }
 
 function create (){
 
-    let platforms = this.physics.add.staticGroup();
+    platforms = this.physics.add.staticGroup();
     platforms.create(30,600,'Ground').refreshBody();
     for(let i =95;i<9000;) {
         platforms.create(i, 580, 'Ground').refreshBody();
@@ -45,15 +43,12 @@ function create (){
     }
 
 
+    player1 = new Player(35,450);
 
 
-    player1 = new Player(35,400);
-
-    this.physics.add.collider(player1.sprite,platforms);
     cursors = this.input.keyboard.createCursorKeys();
 
     console.log(player1);
-
 
 
 
@@ -64,6 +59,7 @@ function create (){
 
 function update(){
 
+    this.physics.add.collider(player1.sprite,platforms,hitb,null,this);
     if (cursors.left.isDown)
     {
         player1.leftM();
@@ -82,12 +78,21 @@ function update(){
 
     }
 
-    if (cursors.up.isDown)
+    if (cursors.up.isDown && player1.sprite.body.touching.down)
     {
         player1.jumpM();
     }
 
 
 }
+
+function  hitb(player1,platforms) {
+        player1.setTint(0xffff);
+        player1.setVelocityY(-800);
+        console.log(player1.y);
+
+
+    }
+
 
 
