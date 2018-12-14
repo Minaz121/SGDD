@@ -43,8 +43,17 @@
  "tileheight":64,
  "tilesets":[
         {
+         "columns":1,
          "firstgid":1,
-         "source":"Ground_1.tsx"
+         "image":"..\/Tiles\/ground\/ground01.png",
+         "imageheight":64,
+         "imagewidth":64,
+         "margin":0,
+         "name":"Ground_1",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":64,
+         "tilewidth":64
         }],
  "tilewidth":64,
  "type":"map",

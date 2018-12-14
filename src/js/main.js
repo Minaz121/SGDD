@@ -32,7 +32,7 @@ function preload (){
     this.load.image('mt','src/assets/Levels/mario.png');
 
     // Load tile map
-    this.load.tilemap('map1','src/assets/Level/Level_1.json',null,Phaser.Tilemap.TILED_JSON);
+    this.load.tilemapTiledJSON('map','src/assets/Levels/Level_1.json');
     //
     this.load.image('bg1','src/assets/BG/BG.png');
 
@@ -63,11 +63,12 @@ function create (){
     // var tiles = map.addTilesetImage('mt');
     // var layer = map.createStaticLayer(0,tiles,0,0);
 
-    var map = this.add.tilemap('map1');
-    map.addTilesetImage('round','Ground');
-    map.createLayer("Image");
-
-
+    map = this.make.tilemap({key:'map'});
+    var tileset = map.addTilesetImage('Ground');
+    //map.createLayer("Image",);
+    console.log(map);
+    var b = map.createStaticLayer(0,tileset,0,0);
+    //console.log(this.cache.tilemap.get('map').data);
 
 
 
