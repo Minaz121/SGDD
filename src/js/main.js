@@ -27,7 +27,7 @@ function preload (){
     game=this;
 
    
-    this.load.image('Ground','src/assets/Tiles/ground/ground01.png');
+    this.load.image('tiles','src/assets/Tiles/ground/ground_02.png');
 
     this.load.image('mt','src/assets/Levels/mario.png');
 
@@ -63,12 +63,18 @@ function create (){
     // var tiles = map.addTilesetImage('mt');
     // var layer = map.createStaticLayer(0,tiles,0,0);
 
-    map = this.make.tilemap({key:'map'});
-    var tileset = map.addTilesetImage('Ground');
-    //map.createLayer("Image",);
-    console.log(map);
-    var b = map.createStaticLayer(0,tileset,0,0);
-    //console.log(this.cache.tilemap.get('map').data);
+   const map = this.make.tilemap({key:'map'});
+   const tileset = map.addTilesetImage('ground_01','tiles');
+   this.Groundlayer = map.createDynamicLayer('Tile Layer 1', tileset, 0, 0);
+   this.Groundlayer.setCollision(0);
+   this.Groundlayer.setCollisionByProperty({collides:true});
+
+    
+
+
+
+
+   //below.setCollision(1,true,'Tile Layer 1');
 
 
 
@@ -89,7 +95,7 @@ function create (){
 
     console.log(player1);
 
-
+     
 
 
 
@@ -99,6 +105,8 @@ function create (){
 function update(){
 
     // this.physics.add.collider(player1.sprite,platforms,hitb,null,this);
+    this.physics.add.collider(player1.sprite,this.Groundlayer);
+   
 
     if (cursors.left.isDown)
     {
