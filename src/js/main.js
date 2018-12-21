@@ -1,6 +1,4 @@
 let player1;
-let enemey;
-
 
 let config = {
     type: Phaser.AUTO,
@@ -26,76 +24,53 @@ function preload (){
 
     game=this;
 
-   
-    this.load.image('tiles','src/assets/Tiles/ground/ground_02.png');
-
-    this.load.image('mt','src/assets/Levels/mario.png');
+    this.load.image('tiles','src/assets/Tiles/wall/wall_1.png');
 
     // Load tile map
-    this.load.tilemapTiledJSON('map','src/assets/Levels/Level_1.json');
+    this.load.tilemapTiledJSON('map','src/assets/Levels/World_2.json');
     //
     this.load.image('bg1','src/assets/BG/BG.png');
 
     //
     this.load.image('fox','src/assets/Object/Mushroom_1.png');
 
-    //
-
-
 
 }
 
 function create (){
 
-//     //
-//     const level = [
-//     [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],
-//     [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],
+    //create player
+    player1 = new Player(45,450);
+
+    const map = this.make.tilemap({key:'map'});
+
+    const tileset = map.addTilesetImage('walls_1','tiles');
+
+    const grounds = map.createStaticLayer('Tile Layer 1',tileset,0,0);
+
+   // grounds.setCollision(0);
+    grounds.setCollisionByProperty({collides:true});
+
+
+
+    this.physics.add.collider(player1.sprite,grounds);
+
+    const debugGraphics = this.add.graphics().setAlpha(0.5);
+    grounds.renderDebug(debugGraphics, {
+        tileColor: null, // Color of non-colliding tiles
+        //collidingTileColor: new Phaser.Display.Color(255, 134, 34, 255), // Color of colliding tiles
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+    });
+
+
+
+
     
-//     [ 39,  39,  39,  39,  39,  39,  39,  39,  39,  40,  40, 39 ],
-//     [ 39,  39,  39,  39,  39,  39,  39,  39,  39,  40,  40, 39 ]
-// ];
-
-    // parse
-
-
-    // var map = this.make.tilemap({data:level,tileWidth:16,tileHeight:16});
-    // var tiles = map.addTilesetImage('mt');
-    // var layer = map.createStaticLayer(0,tiles,0,0);
-
-   const map = this.make.tilemap({key:'map'});
-   const tileset = map.addTilesetImage('ground_01','tiles');
-   this.Groundlayer = map.createDynamicLayer('Tile Layer 1', tileset, 0, 0);
-   this.Groundlayer.setCollision(0);
-   this.Groundlayer.setCollisionByProperty({collides:true});
-
-    
-
-
-
-
-   //below.setCollision(1,true,'Tile Layer 1');
-
-
-
-    platforms = this.physics.add.staticGroup();
-
-    // platforms.create(30,600,'Ground').refreshBody();
-    // for(let i =95;i<9000;) {
-    //     platforms.create(i, 580, 'Ground').refreshBody();
-    //     i+=65;
-    // }
-
-
-    player1 = new Player(35,450);
-    enemey = new Enemey();
-
-
     cursors = this.input.keyboard.createCursorKeys();
 
     console.log(player1);
 
-     
+
 
 
 
@@ -103,10 +78,9 @@ function create (){
 }
 
 function update(){
-
     // this.physics.add.collider(player1.sprite,platforms,hitb,null,this);
-    this.physics.add.collider(player1.sprite,this.Groundlayer);
-   
+
+
 
     if (cursors.left.isDown)
     {
@@ -116,7 +90,7 @@ function update(){
     else if (cursors.right.isDown)
     {
         player1.rightM();
-        
+
 
 
     }
@@ -128,9 +102,10 @@ function update(){
 
     }
 
-    if (cursors.up.isDown && player1.sprite.body.touching.down)
+    if (cursors.up.isDown && player1.sprite.body.blocked.down)
     {
         player1.jumpM();
+        player1.shrinkMe();
         playerColor(player1.sprite);
     }
 
