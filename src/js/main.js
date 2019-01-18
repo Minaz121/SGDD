@@ -1,4 +1,6 @@
 let player1;
+let grounds;
+let audio1 = new audio();
 
 let config = {
     type: Phaser.AUTO,
@@ -24,15 +26,21 @@ function preload (){
 
     game=this;
 
-    this.load.image('tiles','src/assets/Tiles/wall/wall_1.png');
+    // Load assets
 
-    // Load tile map
-    this.load.tilemapTiledJSON('map','src/assets/Levels/World_2.json');
+    this.load.image('tiles','src/assets/Tiles/wall/wall_hyro_1.png');
+
+    //Load Player Object
+    this.load.image('vertix','src/assets/Object/player.png');
+
+
+    // Load tile map world
+    this.load.tilemapTiledJSON('map1','src/assets/Levels/World_2.json');
+    this.load.tilemapTiledJSON('map','src/assets/Levels/World_3.json');
+
     //
     this.load.image('bg1','src/assets/BG/BG.png');
 
-    //
-    this.load.image('fox','src/assets/Object/Mushroom_1.png');
 
 
 }
@@ -46,14 +54,15 @@ function create (){
 
     const tileset = map.addTilesetImage('walls_1','tiles');
 
-    const grounds = map.createStaticLayer('Tile Layer 1',tileset,0,0);
+    grounds = map.createStaticLayer('Tile Layer 1',tileset,0,0);
 
    // grounds.setCollision(0);
     grounds.setCollisionByProperty({collides:true});
 
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.cameras.main.startFollow(player1);
 
-
-    this.physics.add.collider(player1.sprite,grounds);
+    // this.physics.add.collider(player1.sprite,grounds);
 
     const debugGraphics = this.add.graphics().setAlpha(0.5);
     grounds.renderDebug(debugGraphics, {
@@ -64,8 +73,6 @@ function create (){
 
 
 
-
-    
     cursors = this.input.keyboard.createCursorKeys();
 
     console.log(player1);
@@ -79,24 +86,28 @@ function create (){
 
 function update(){
     // this.physics.add.collider(player1.sprite,platforms,hitb,null,this);
-
+    this.physics.add.collider(player1.sprite,grounds);
+    
 
 
     if (cursors.left.isDown)
     {
-        player1.leftM();
+        player1.moveLeft();
 
     }
     else if (cursors.right.isDown)
     {
-        player1.rightM();
+        player1.moveRight();
+        
+
 
 
 
     }
     else
     {
-        player1.neM();
+        player1.neutralMovement();
+
 
 
 
@@ -104,25 +115,17 @@ function update(){
 
     if (cursors.up.isDown && player1.sprite.body.blocked.down)
     {
-        player1.jumpM();
-        player1.shrinkMe();
-        playerColor(player1.sprite);
+        player1.jumpUp();
+
+
     }
 
 
 }
 
-function  hitb(player1,platforms) {
-    player1.setTint(0xffff);
-    //player1.setVelocityY(-800);
-    console.log(player1.y);
-}
+function collisionHit(){
 
-
-
-function playerColor(player1){
-
-    player1.setTint(0xff0000);
+    player1.sprite.setVelocityX(-500);
 
 }
 
